@@ -12,11 +12,11 @@ type Props = {
 };
 
 export function AddProductModal(props: Props) {
-  const [id, setId] = useState(0);
-  const [name, setName] = useState("");
-  const [hsn, setHsn] = useState("");
-  const [tax_rate, setTax_rate] = useState(0);
-  const [allProducts, setAllProducts] = useState([
+  const [id, setId] = useState<number>();
+  const [name, setName] = useState<string>();
+  const [hsn, setHsn] = useState<string>();
+  const [tax_rate, setTax_rate] = useState<number>();
+  const [allProducts, setAllProducts] = useState<ProductType[]>([
     {
       id: 0,
       name: "kjekew",
@@ -74,16 +74,16 @@ export function AddProductModal(props: Props) {
   }
 
   function onProductSelect(product: ProductType) {
-    setId(product.id);
-    setName(product.name);
-    setHsn(product.hsn);
-    setTax_rate(product.tax_rate);
+    setId(product.id || 0);
+    setName(product.name || "");
+    setHsn(product.hsn || "");
+    setTax_rate(product.tax_rate || 0);
   }
   function PropToSelectList(
-    products: { id: number; name: string; hsn: string; tax_rate: number }[]
+    products: ProductType[]
   ) {
     return products.map(
-      (opt: { id: number; name: string; hsn: string; tax_rate: number }) => ({
+      (opt: ProductType) => ({
         label: opt!.name,
         value: opt,
       })

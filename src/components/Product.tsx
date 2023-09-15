@@ -2,10 +2,10 @@ import { Fragment, useState } from "react";
 import { AddProductModal } from "./AddProductModal";
 
 export type ProductType = {
-  id: number;
-  name: string;
-  hsn: string;
-  tax_rate: number;
+  id?: number;
+  name?: string;
+  hsn?: string;
+  tax_rate?: number;
 };
 
 type Props = {

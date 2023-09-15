@@ -3,10 +3,10 @@ import Select from "react-select";
 import CustomerModal from "./CustomerModal";
 
 export type CustomerType = {
-  id: number;
-  name: string;
-  phone_no: string;
-  address: string;
+  id?: number;
+  name?: string;
+  phone_no?: string;
+  address?: string;
 };
 
 interface Props {
@@ -16,14 +16,7 @@ interface Props {
 
 export default function Customer(props: Props) {
   const [showCustomerModal, setShowCustomerModal] = useState(false);
-  const [customers, setCustomers] = useState([
-    {
-      id: 0,
-      name: "Please Reload",
-      phone_no: "0000000000",
-      address: "Default Address",
-    },
-  ]);
+  const [customers, setCustomers] = useState<CustomerType[]>([]);
 
   function getCustomers() {
     fetch("http://127.0.0.1:8080/customers")
@@ -51,15 +44,10 @@ export default function Customer(props: Props) {
   }
 
   function PropToSelectList(
-    customers: { id: number; name: string; phone_no: string; address: string }[]
+    customers: CustomerType[]
   ) {
     return customers.map(
-      (opt: {
-        id: number;
-        name: string;
-        phone_no: string;
-        address: string;
-      }) => ({
+      (opt: CustomerType) => ({
         label: opt!.phone_no,
         value: opt,
       })

@@ -9,9 +9,9 @@ interface Props {
 }
 
 export default function CustomerModal(props: Props) {
-  const [name, setName] = useState("");
-  const [phone_no, setPhone_No] = useState("");
-  const [address, setAddress] = useState("");
+  const [name, setName] = useState<string>();
+  const [phone_no, setPhone_No] = useState<string>();
+  const [address, setAddress] = useState<string>();
 
   const handleClose = () => props.setShow(false);
 

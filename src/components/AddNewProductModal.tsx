@@ -10,9 +10,9 @@ interface Props {
 }
 
 export default function AddNewProductModal(props: Props) {
-  const [name, setName] = useState("");
-  const [hsn, setHsn] = useState("");
-  const [tax_rate, setTax_rate] = useState(0);
+  const [name, setName] = useState<string>();
+  const [hsn, setHsn] = useState<string>();
+  const [tax_rate, setTax_rate] = useState<number>();
 
   const handleClose = () => props.setShow(false);
 
