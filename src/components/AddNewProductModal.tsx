@@ -2,11 +2,11 @@ import { Modal, Button } from "react-bootstrap";
 import { useState } from "react";
 import { CustomerType } from "./Customer";
 import { ProductType } from "./Product";
+import { addNewProduct } from "../external/Product";
 
 interface Props {
   show: boolean;
   setShow: (value: boolean) => void;
-  onSubmit: (product: ProductType) => void;
 }
 
 export default function AddNewProductModal(props: Props) {
@@ -17,8 +17,10 @@ export default function AddNewProductModal(props: Props) {
   const handleClose = () => props.setShow(false);
 
   function HandleSubmit() {
-    props.onSubmit({ id: 0, name, hsn, tax_rate });
-    handleClose();
+    if (name != undefined && hsn != undefined && tax_rate != undefined) {
+      addNewProduct({ id: 0, name, hsn, tax_rate });
+      handleClose();
+    }
   }
 
   return (

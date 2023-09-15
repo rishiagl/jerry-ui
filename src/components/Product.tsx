@@ -1,5 +1,6 @@
 import { Fragment, useState } from "react";
 import { AddProductModal } from "./AddProductModal";
+import { InvoiceItem } from "../routes/Invoice";
 
 export type ProductType = {
   id?: number;
@@ -9,8 +10,8 @@ export type ProductType = {
 };
 
 type Props = {
-  productList: ProductType[];
-  setProductList: (productList: ProductType[]) => void;
+  invoiceItemList: InvoiceItem[];
+  setInvoiceItemList: (invoiceItemLIst: InvoiceItem[]) => void;
 };
 
 export default function Product(props: Props) {
@@ -21,8 +22,8 @@ export default function Product(props: Props) {
       <AddProductModal
         show={showAddProductModal}
         setShow={setShowAddProductModal}
-        productList={props.productList}
-        setProductList={props.setProductList}
+        invoiceItemList={props.invoiceItemList}
+        setInvoiceItemList={props.setInvoiceItemList}
       ></AddProductModal>
       <div>
         <h2>
@@ -37,19 +38,26 @@ export default function Product(props: Props) {
           </button>
         </h2>
 
-        {props.productList.map((product) => (
+        {props.invoiceItemList.map((invoiceItem) => (
           <div>
             <p>
-              Name: {product.name}
+              Name: {invoiceItem.product.name}
               <br />
-              HSN: {product.hsn}
+              HSN: {invoiceItem.product.hsn}
               <br />
-              Tax_rate: {product.tax_rate}
+              Tax_rate: {invoiceItem.product.tax_rate}
+              <br />
+              QTY: {invoiceItem.qty}
+              <br />
+              Rate: {invoiceItem.rate}
               <br />
               <button
+                className="btn btn-danger"
                 onClick={() => {
-                  props.setProductList(
-                    props.productList.filter((p) => p.id !== product.id)
+                  props.setInvoiceItemList(
+                    props.invoiceItemList.filter(
+                      (p) => p.product !== invoiceItem.product
+                    )
                   );
                 }}
               >

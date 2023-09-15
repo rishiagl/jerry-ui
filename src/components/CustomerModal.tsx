@@ -1,11 +1,11 @@
 import { Modal, Button } from "react-bootstrap";
 import { useState } from "react";
 import { CustomerType } from "./Customer";
+import { addNewCustomer } from "../external/Customer";
 
 interface Props {
   show: boolean;
   setShow: (value: boolean) => void;
-  onSubmit: (customer: CustomerType) => void;
 }
 
 export default function CustomerModal(props: Props) {
@@ -16,8 +16,10 @@ export default function CustomerModal(props: Props) {
   const handleClose = () => props.setShow(false);
 
   function HandleSubmit() {
-    props.onSubmit({ id: 0, name, phone_no, address });
-    handleClose();
+    if (name != undefined && phone_no != undefined && address != undefined) {
+      addNewCustomer({ id: 0, name, phone_no, address });
+      handleClose();
+    }
   }
 
   return (
@@ -39,8 +41,9 @@ export default function CustomerModal(props: Props) {
               id="phone_no"
               className="form-control"
               maxLength={10}
-              value={phone_no}
+              value={phone_no || ""}
               onChange={(event) => setPhone_No(event.target.value)}
+              required
             ></input>
           </div>
 
@@ -50,8 +53,9 @@ export default function CustomerModal(props: Props) {
               className="form-control"
               type="text"
               id="name"
-              value={name}
+              value={name || ""}
               onChange={(event) => setName(event.target.value)}
+              required
             ></input>
           </div>
 
@@ -61,8 +65,9 @@ export default function CustomerModal(props: Props) {
               className="form-control"
               type="text"
               id="address"
-              value={address}
+              value={address || ""}
               onChange={(event) => setAddress(event.target.value)}
+              required
             ></input>
           </div>
 

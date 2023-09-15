@@ -1,6 +1,7 @@
-import { Fragment, ReactHTMLElement, useState } from "react";
+import { Fragment, ReactHTMLElement, useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import CustomerModal from "./CustomerModal";
+import { getCustomers } from "../external/Customer";
 
 export type CustomerType = {
   id?: number;
@@ -18,40 +19,22 @@ export default function Customer(props: Props) {
   const [showCustomerModal, setShowCustomerModal] = useState(false);
   const [customers, setCustomers] = useState<CustomerType[]>([]);
 
-  function getCustomers() {
-    fetch("http://127.0.0.1:8080/customers")
-      .then((res) => res.json())
-      .then((json) => {
-        setCustomers(json);
-      });
-  }
-
-  function addNewCustomer(customer: CustomerType) {
-    fetch("http://127.0.0.1:8080/customers", {
-      method: "POST",
-      body: JSON.stringify(customer),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+  useEffect(() => {
+    getCustomers()
+      .then((res) => {
+        console.log(res);
+        setCustomers(res);
       })
-      .catch((err) => {
-        console.log(err.message);
+      .catch((e) => {
+        console.log(e);
       });
-  }
+  }, [showCustomerModal]);
 
-  function PropToSelectList(
-    customers: CustomerType[]
-  ) {
-    return customers.map(
-      (opt: CustomerType) => ({
-        label: opt!.phone_no,
-        value: opt,
-      })
-    );
+  function PropToSelectList(customers: CustomerType[]) {
+    return customers.map((opt: CustomerType) => ({
+      label: opt!.phone_no,
+      value: opt,
+    }));
   }
 
   const m = 10;
@@ -60,18 +43,10 @@ export default function Customer(props: Props) {
       <CustomerModal
         show={showCustomerModal}
         setShow={setShowCustomerModal}
-        onSubmit={addNewCustomer}
       ></CustomerModal>
       <div>
         <h2>
           Customer &nbsp;
-          <button
-            className="btn btn-primary"
-            onClick={(event) => getCustomers()}
-          >
-            Reload
-          </button>{" "}
-          &nbsp;
           <button
             className="btn btn-success"
             onClick={(event) => setShowCustomerModal(true)}
@@ -85,7 +60,7 @@ export default function Customer(props: Props) {
         />
         <p>
           Id: {props.customer.id}
-          <br/>
+          <br />
           Name: {props.customer.name}
           <br />
           Phone No: {props.customer.phone_no}

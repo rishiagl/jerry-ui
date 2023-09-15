@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Product, { ProductType } from "./Product";
 import { Modal } from "react-bootstrap";
 import Select from "react-select";
 import AddNewProductModal from "./AddNewProductModal";
+import { InvoiceItem } from "../routes/Invoice";
+import { getAllProducts } from "../external/Product";
 
 type Props = {
   show: boolean;
   setShow: (value: boolean) => void;
-  productList: ProductType[];
-  setProductList: (productList: ProductType[]) => void;
+  invoiceItemList: InvoiceItem[];
+  setInvoiceItemList: (invoiceItemList: InvoiceItem[]) => void;
 };
 
 export function AddProductModal(props: Props) {
@@ -16,61 +18,37 @@ export function AddProductModal(props: Props) {
   const [name, setName] = useState<string>();
   const [hsn, setHsn] = useState<string>();
   const [tax_rate, setTax_rate] = useState<number>();
-  const [allProducts, setAllProducts] = useState<ProductType[]>([
-    {
-      id: 0,
-      name: "kjekew",
-      hsn: "321421",
-      tax_rate: 0,
-    },
-    {
-      id: 1,
-      name: "qebihebf",
-      hsn: "ewfkewkf",
-      tax_rate: 0,
-    },
-    {
-      id: 2,
-      name: "webdieb",
-      hsn: "hebbew",
-      tax_rate: 0,
-    },
-  ]);
+  const [qty, setQty] = useState<number>();
+  const [rate, setRate] = useState<number>();
+  const [allProducts, setAllProducts] = useState<ProductType[]>([]);
   const [showAddNewProductModal, setShowAddNewProductModal] = useState(false);
+
+  useEffect(() => {
+    getAllProducts()
+      .then((res) => {
+        console.log(res);
+        setAllProducts(res);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, [showAddNewProductModal]);
 
   const handleClose = () => props.setShow(false);
 
   function HandleSubmit() {
-    props.setProductList([
-      ...props.productList,
-      { id: id, name: name, hsn: hsn, tax_rate: tax_rate },
-    ]);
-    handleClose();
-  }
+    if (id != undefined && qty != undefined && rate != undefined) {
+      props.setInvoiceItemList([
+        ...props.invoiceItemList,
+        {
+          product: { id: id, name: name, hsn: hsn, tax_rate: tax_rate },
+          qty: qty,
+          rate: rate,
+        },
+      ]);
 
-  function getAllProducts() {
-    // fetch("http://127.0.0.1:8080/products")
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     setAllProducts(json);
-    //   });
-  }
-
-  function addNewProduct(customer: ProductType) {
-    // fetch("http://127.0.0.1:8080/customers", {
-    //   method: "POST",
-    //   body: JSON.stringify(customer),
-    //   headers: {
-    //     "Content-type": "application/json; charset=UTF-8",
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.message);
-    //   });
+      handleClose();
+    }
   }
 
   function onProductSelect(product: ProductType) {
@@ -79,20 +57,19 @@ export function AddProductModal(props: Props) {
     setHsn(product.hsn || "");
     setTax_rate(product.tax_rate || 0);
   }
-  function PropToSelectList(
-    products: ProductType[]
-  ) {
-    return products.map(
-      (opt: ProductType) => ({
-        label: opt!.name,
-        value: opt,
-      })
-    );
+  function PropToSelectList(products: ProductType[]) {
+    return products.map((opt: ProductType) => ({
+      label: opt!.name,
+      value: opt,
+    }));
   }
 
   return (
     <>
-    <AddNewProductModal show={showAddNewProductModal} setShow={setShowAddNewProductModal} onSubmit={addNewProduct}></AddNewProductModal>
+      <AddNewProductModal
+        show={showAddNewProductModal}
+        setShow={setShowAddNewProductModal}
+      ></AddNewProductModal>
       <Modal
         show={props.show}
         onHide={handleClose}
@@ -102,11 +79,12 @@ export function AddProductModal(props: Props) {
         <Modal.Header closeButton>
           <Modal.Title>
             Add Product &nbsp;
-            <button className="btn btn-primary" onClick={(event) => {}}>
-              Reload
-            </button>{" "}
-            &nbsp;
-            <button className="btn btn-success" onClick={(event) => {setShowAddNewProductModal(true)}}>
+            <button
+              className="btn btn-success"
+              onClick={(event) => {
+                setShowAddNewProductModal(true);
+              }}
+            >
               New
             </button>
           </Modal.Title>
@@ -115,7 +93,8 @@ export function AddProductModal(props: Props) {
           <Select
             options={PropToSelectList(allProducts)}
             onChange={(opt) => onProductSelect(opt!.value)}
-          />
+          />{" "}
+          &nbsp;
           <div className="mb-3">
             <p>
               Id: {id}
@@ -127,14 +106,36 @@ export function AddProductModal(props: Props) {
               Tax_Rate: {tax_rate}
               <br />
             </p>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={(event) => HandleSubmit()}
-            >
-              Submit
-            </button>
           </div>
+          <div className="mb-3">
+            <label className="form-label">Qty:</label>
+            <input
+              className="form-control"
+              type="number"
+              id="qty"
+              value={qty}
+              onChange={(event) => setQty(parseInt(event.target.value))}
+              required
+            ></input>
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Rate:</label>
+            <input
+              className="form-control"
+              type="number"
+              id="rate"
+              value={rate}
+              onChange={(event) => setRate(parseInt(event.target.value))}
+              required
+            ></input>
+          </div>
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={(event) => HandleSubmit()}
+          >
+            Submit
+          </button>
         </Modal.Body>
       </Modal>
     </>
