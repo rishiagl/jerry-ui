@@ -1,38 +1,32 @@
 import { useState } from "react";
 import Customer from "../components/Customer";
+import Product from "../components/Product";
 import { CustomerType } from "../components/Customer";
 import CustomerModal from "../components/CustomerModal";
+import { json } from "react-router-dom";
 
 export default function Invoice() {
-  const [showCustomerModal, setShowCustomerModal] = useState(false);
-  const [customers, setCustomers] = useState([
+  const [customer, setCustomer] = useState({
+    id: 0,
+    name: "Please Reload",
+    phone_no: "0000000000",
+    address: "Default Address",
+  });
+
+  const [productList, setproductList] = useState([
     {
-      name: "Rishi Agarwal",
-      phone_no: "7970460076",
-      address: "Sakchi, Jamshedpur",
+      id: 0,
+      name: "Base Product",
+      hsn: "000000",
+      tax_rate: 0,
     },
-    { name: "Priya Agarwal", phone_no: "7846892983", address: "jamshedpur" },
   ]);
-
-  function onClickNew() {
-    setShowCustomerModal(true);
-  }
-
-  function addNewCustomer(customer: CustomerType) {
-    const updateCustomers = [...customers, customer];
-    setCustomers(updateCustomers);
-    console.log(customer);
-  }
 
   return (
     <div className="container">
       <h1>Invoice</h1>
-      <CustomerModal
-        show={showCustomerModal}
-        setShow={setShowCustomerModal}
-        onSubmit={addNewCustomer}
-      ></CustomerModal>
-      <Customer customerList={customers} onClickNew={onClickNew}></Customer>
+      <Customer customer={customer} setCustomer={setCustomer}></Customer>
+      <Product productList={productList} setProductList={setproductList}></Product>
     </div>
   );
 }

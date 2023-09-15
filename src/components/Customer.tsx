@@ -1,29 +1,65 @@
 import { Fragment, ReactHTMLElement, useState } from "react";
 import Select from "react-select";
+import CustomerModal from "./CustomerModal";
 
 export type CustomerType = {
+  id: number;
   name: string;
   phone_no: string;
   address: string;
 };
 
 interface Props {
-  customerList: CustomerType[];
-  onClickNew: () => void;
+  customer: CustomerType;
+  setCustomer: (customer: CustomerType) => void;
 }
 
 export default function Customer(props: Props) {
-  const [customerState, setCustomerState] = useState({
-    name: "",
-    phone_no: "",
-    address: "",
-  });
+  const [showCustomerModal, setShowCustomerModal] = useState(false);
+  const [customers, setCustomers] = useState([
+    {
+      id: 0,
+      name: "Please Reload",
+      phone_no: "0000000000",
+      address: "Default Address",
+    },
+  ]);
+
+  function getCustomers() {
+    fetch("http://127.0.0.1:8080/customers")
+      .then((res) => res.json())
+      .then((json) => {
+        setCustomers(json);
+      });
+  }
+
+  function addNewCustomer(customer: CustomerType) {
+    fetch("http://127.0.0.1:8080/customers", {
+      method: "POST",
+      body: JSON.stringify(customer),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
 
   function PropToSelectList(
-    customers: { name: string; phone_no: string; address: string }[]
+    customers: { id: number; name: string; phone_no: string; address: string }[]
   ) {
     return customers.map(
-      (opt: { name: string; phone_no: string; address: string }) => ({
+      (opt: {
+        id: number;
+        name: string;
+        phone_no: string;
+        address: string;
+      }) => ({
         label: opt!.phone_no,
         value: opt,
       })
@@ -33,26 +69,40 @@ export default function Customer(props: Props) {
   const m = 10;
   return (
     <Fragment>
+      <CustomerModal
+        show={showCustomerModal}
+        setShow={setShowCustomerModal}
+        onSubmit={addNewCustomer}
+      ></CustomerModal>
       <div>
         <h2>
           Customer &nbsp;
           <button
+            className="btn btn-primary"
+            onClick={(event) => getCustomers()}
+          >
+            Reload
+          </button>{" "}
+          &nbsp;
+          <button
             className="btn btn-success"
-            onClick={(event) => props.onClickNew()}
+            onClick={(event) => setShowCustomerModal(true)}
           >
             New
           </button>
         </h2>
         <Select
-          options={PropToSelectList(props.customerList)}
-          onChange={(opt) => setCustomerState(opt!.value)}
+          options={PropToSelectList(customers)}
+          onChange={(opt) => props.setCustomer(opt!.value)}
         />
         <p>
-          Name: {customerState.name}
+          Id: {props.customer.id}
+          <br/>
+          Name: {props.customer.name}
           <br />
-          Phone No: {customerState.phone_no}
+          Phone No: {props.customer.phone_no}
           <br />
-          Address: {customerState.address}
+          Address: {props.customer.address}
           <br />
         </p>
       </div>
