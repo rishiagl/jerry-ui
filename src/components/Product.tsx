@@ -26,7 +26,7 @@ export default function Product(props: Props) {
         setInvoiceItemList={props.setInvoiceItemList}
       ></AddProductModal>
       <div>
-        <h2>
+        <h3>
           Product List &nbsp;
           <button
             className="btn btn-success"
@@ -36,7 +36,7 @@ export default function Product(props: Props) {
           >
             Add
           </button>
-        </h2>
+        </h3>
 
         {props.invoiceItemList.map((invoiceItem) => (
           <div>

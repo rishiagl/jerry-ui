@@ -1,5 +1,5 @@
 import { Modal, Button } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomerType } from "./Customer";
 import { ProductType } from "./Product";
 import { addNewProduct } from "../external/Product";
@@ -13,6 +13,12 @@ export default function AddNewProductModal(props: Props) {
   const [name, setName] = useState<string>();
   const [hsn, setHsn] = useState<string>();
   const [tax_rate, setTax_rate] = useState<number>();
+
+  useEffect(() => {
+    setName(undefined);
+    setHsn(undefined);
+    setTax_rate(undefined);
+  }, [props.show]);
 
   const handleClose = () => props.setShow(false);
 

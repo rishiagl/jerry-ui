@@ -1,5 +1,5 @@
 import { Modal, Button } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomerType } from "./Customer";
 import { addNewCustomer } from "../external/Customer";
 
@@ -14,6 +14,13 @@ export default function CustomerModal(props: Props) {
   const [address, setAddress] = useState<string>();
 
   const handleClose = () => props.setShow(false);
+
+  useEffect( () => {
+    setName(undefined);
+    setAddress(undefined);
+    setPhone_No(undefined);
+  }, [props.show]
+  );
 
   function HandleSubmit() {
     if (name != undefined && phone_no != undefined && address != undefined) {

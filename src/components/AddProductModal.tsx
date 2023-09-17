@@ -32,7 +32,13 @@ export function AddProductModal(props: Props) {
       .catch((e) => {
         console.log(e);
       });
-  }, [showAddNewProductModal]);
+    setId(undefined);
+    setName(undefined);
+    setHsn(undefined);
+    setTax_rate(undefined);
+    setQty(undefined);
+    setRate(undefined);
+  }, [props.show, showAddNewProductModal]);
 
   const handleClose = () => props.setShow(false);
 

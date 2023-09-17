@@ -45,7 +45,7 @@ export default function Customer(props: Props) {
         setShow={setShowCustomerModal}
       ></CustomerModal>
       <div>
-        <h2>
+        <h3>
           Customer &nbsp;
           <button
             className="btn btn-success"
@@ -53,7 +53,7 @@ export default function Customer(props: Props) {
           >
             New
           </button>
-        </h2>
+        </h3>
         <Select
           options={PropToSelectList(customers)}
           onChange={(opt) => props.setCustomer(opt!.value)}
