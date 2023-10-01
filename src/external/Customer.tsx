@@ -2,7 +2,8 @@ import { CustomerType } from "../components/Customer";
 
 export async function getCustomers(): Promise<CustomerType[]> {
   let customerList: CustomerType[] = [];
-  await fetch("http://127.0.0.1:8080/customers")
+  const customer_api_url: string = import.meta.env.VITE_REST_API_SERVER_URL + "/customers";
+  await fetch(customer_api_url)
     .then((res) => res.json())
     .then((json) => {
       customerList = json;
@@ -11,7 +12,8 @@ export async function getCustomers(): Promise<CustomerType[]> {
 }
 
 export function addNewCustomer(customer: CustomerType) {
-  fetch("http://127.0.0.1:8080/customers", {
+  const customer_api_url = import.meta.env.VITE_REST_API_SERVER_URL + "/customers";
+  fetch(customer_api_url, {
     method: "POST",
     body: JSON.stringify(customer),
     headers: {

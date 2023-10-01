@@ -1,8 +1,9 @@
 import { ProductType } from "../components/Product";
 
 export async function getAllProducts(): Promise<ProductType[]> {
+  const products_api_url = import.meta.env.VITE_REST_API_SERVER_URL + "/products";
   let productList: ProductType[] = [];
-  await fetch("http://127.0.0.1:8080/products")
+  await fetch(products_api_url)
     .then((res) => res.json())
     .then((json) => {
       productList = json;
@@ -11,7 +12,8 @@ export async function getAllProducts(): Promise<ProductType[]> {
 }
 
 export function addNewProduct(product: ProductType) {
-  fetch("http://127.0.0.1:8080/products", {
+  const products_api_url = import.meta.env.VITE_REST_API_SERVER_URL + "/products";
+  fetch(products_api_url, {
     method: "POST",
     body: JSON.stringify(product),
     headers: {
