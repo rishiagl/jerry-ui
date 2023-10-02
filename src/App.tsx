@@ -18,6 +18,7 @@ import { PageLoader } from "./pages/page-loader";
 import { NotFoundPage } from "./pages/pageNotFound";
 import { HomePage } from "./pages/home-page";
 import { AuthenticationGuard } from "./components/authentication-guard";
+import { DashboardPage } from "./pages/dashboard-page";
 
 export const App = () => {
   const { isLoading } = useAuth0();
@@ -34,6 +35,7 @@ export const App = () => {
     <Routes>
       <Route path="/" element={<IndexPage />} />
       <Route path="/home" element={<AuthenticationGuard component={HomePage} />} />
+      <Route path="/dashboard" element={<AuthenticationGuard component={DashboardPage} />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/callback" element={<CallbackPage />} />
       <Route path="/invoice" element={<Invoice />} />
