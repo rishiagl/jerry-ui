@@ -1,9 +1,9 @@
 import { Fragment, useEffect, useState } from "react";
-import { getCompany, getCompanyById } from "../external/Company";
+import { getCompanyById } from "../external/Company";
 import Select from "react-select";
 import CompanyModal from "./AddCompanyModal";
 import { useNavigate } from "react-router-dom";
-import { getCompanyByUserEmail } from "../external/CompanyUsers";
+import { getCompanyUsersByEmail } from "../external/CompanyUsers";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export type CompanyType = {
@@ -37,21 +37,39 @@ export default function Company(props: Props) {
   const navigate = useNavigate();
 
   const { user } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   if (!user) {
     return null;
   }
   
   useEffect(() => {
-    getCompanyByUserEmail(user.email || "")
-      .then((res) => {
-        console.log(res);
-        setCompanies(res);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, [showCompanyModal]);
+    let isMounted = true;
+
+    const getCompanies = async () => {
+
+      const accessToken = await getAccessTokenSilently();
+      const { data, error } = await getCompanyUsersByEmail(accessToken, user.email);
+
+      if (!isMounted) {
+        return;
+      }
+
+      if (data) {
+        setCompanies(data);
+      }
+
+      if (error) {
+        console.log("External API not working");
+      }
+    };
+
+    getCompanies();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [getAccessTokenSilently, showCompanyModal]);
 
   const handleGo = () => {
     if(props.company.id != undefined)
@@ -61,15 +79,16 @@ export default function Company(props: Props) {
 
   }
 
-  const handleSelect = (companyUser: CompanyUsersType) => {
-    getCompanyById(companyUser.company_id || 0)
-      .then((res) => {
-        console.log(res);
-        props.setCompany(res[0]);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+  const handleSelect = async(companyUser: CompanyUsersType) => {
+
+    const accessToken = getAccessTokenSilently();
+    const { data, error } = await getCompanyById(accessToken, companyUser.company_id);
+    if(data){
+      props.setCompany(data)
+    }
+    if(error){
+      console.log(error)
+    }
   }
   
   function PropToSelectList(companies: CompanyUsersType[]) {
@@ -127,3 +146,4 @@ export default function Company(props: Props) {
     </Fragment>
   );
 }
+

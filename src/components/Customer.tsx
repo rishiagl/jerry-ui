@@ -44,7 +44,17 @@ export default function Customer(props: Props) {
         show={showCustomerModal}
         setShow={setShowCustomerModal}
       ></CustomerModal>
-      <div>
+      <div style={              {borderStyle: "solid",
+              borderWidth: "8px",
+              borderColor: "#2979ff",
+              padding: "2rem",
+              borderRadius: "30px",
+              marginLeft: "35%",
+              marginRight: "15%",
+              fontFamily: "Lucida Console",
+              fontSize: "clamp(1rem, 1.5vw, 3rem)",
+              textAlign: "left",
+              maxWidth: "500px"}}>
         <h3>
           Customer &nbsp;
           <button
