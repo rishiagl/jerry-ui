@@ -9,7 +9,6 @@ import {
 } from "react-router-dom";
 import Root from "./routes/Root"
 import Invoice from "./routes/Invoice";
-import { ProfilePage } from "./profile-page";
 import { CallbackPage } from "./callback-page";
 import { redirect } from "react-router-dom";
 import { IndexPage } from "./pages/index-page";
@@ -36,7 +35,6 @@ export const App = () => {
       <Route path="/" element={<IndexPage />} />
       <Route path="/home" element={<AuthenticationGuard component={HomePage} />} />
       <Route path="/dashboard" element={<AuthenticationGuard component={DashboardPage} />} />
-      <Route path="/profile" element={<ProfilePage />} />
       <Route path="/callback" element={<CallbackPage />} />
       <Route path="/invoice" element={<Invoice />} />
       <Route path="*" element={<NotFoundPage />} />
