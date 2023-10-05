@@ -21,7 +21,7 @@ export function IndexPage() {
   const { isAuthenticated } = useAuth0();
 
   return (
-    <div className="container-fluid d-flex" style={backgroundStyle}>
+    <div className="container-fluid d-flex" style={backgroundStyle as React.CSSProperties}>
       <div style={{ marginTop: "2%" }}>
         <p
           className="text-white"
