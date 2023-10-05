@@ -25,7 +25,7 @@ export function IndexPage() {
       <div style={{ marginTop: "2%" }}>
         <p
           className="text-white"
-          style={{ fontSize: "clamp(0.8rem, 1.5vw, 2rem)" }}
+          style={{ fontSize: "clamp(2rem, 1.5vw, 2rem)" }}
         >
           "A minimalist Invoicing Manager for the hustlers"
         </p>
