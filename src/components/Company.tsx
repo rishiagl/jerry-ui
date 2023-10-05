@@ -56,7 +56,7 @@ export default function Company(props: Props) {
   const handleGo = () => {
     if(props.company.id != undefined)
     {
-        navigate("/dashboard");
+        navigate("/dashboard", {state: {company: props.company, style: {}}});
     }
 
   }
