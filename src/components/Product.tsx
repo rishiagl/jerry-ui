@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { AddProductModal } from "./AddProductModal";
+import { AddProductModal } from "./modals/product-modal";
 import { InvoiceItem } from "../routes/Invoice";
 
 export type ProductType = {

@@ -1,40 +1,7 @@
 
-import { callExternalApi } from "./external-api";
+import { callExternalApi, callExternalApiWithBody } from "./external-api";
 
-const apiServerUrl = import.meta.env.VITE_API_SERVER_URL;
-
-export const getPublicResource = async () => {
-  const config = {
-    url: `${apiServerUrl}/api/messages/public`,
-    method: "GET",
-    headers: {
-      "content-type": "application/json",
-    },
-  };
-
-  const { data, error } = await callExternalApi({ config });
-
-  return {
-    data: data || null,
-    error,
-  };
-};
-
-export const getCompanyUsers = async(accessToken) => {
-  const config = {
-    url: `${apiServerUrl}/company-users`,
-    method: "GET",
-    body: "",
-    headers: {
-      "content-type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-
-  const { data, error } = await callExternalApi({ config });
-
-  return data
-};
+const apiServerUrl = import.meta.env.VITE_REST_API_SERVER_URL;
 
 export const getCompanyUsersByEmail = async(accessToken, email_id) => {
   const config = {
@@ -46,12 +13,11 @@ export const getCompanyUsersByEmail = async(accessToken, email_id) => {
       Authorization: `Bearer ${accessToken}`,
     },
   };
-
-  const { data, error } = await callExternalApi({ config });
+  const { data, error } = await callExternalApi(config);
 
   return {
     data: data,
-    error: error
+    error: error,
   };
   }
 
@@ -66,7 +32,7 @@ export const addNewCompanyUsers = async(accessToken, company_user) => {
     },
   };
 
-  const { data, error } = await callExternalApi({ config });
+  const { data, error } = await callExternalApiWithBody(config);
 
   return data
 }

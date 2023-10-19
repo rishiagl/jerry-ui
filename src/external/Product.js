@@ -2,39 +2,28 @@ import { callExternalApi, callExternalApiWithBody } from "./external-api";
 
 const apiServerUrl = import.meta.env.VITE_REST_API_SERVER_URL;
 
-export const getCompanyById = async(accessToken, id) => {
+export const getProduct = async(accessToken) => {
   const config = {
-    url: `${apiServerUrl}/company/${id}`,
+    url: `${apiServerUrl}/product`,
     method: "GET",
     headers: {
       "content-type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
   };
-
-  const { data, error } = await callExternalApi(config);
-
-  return {
-    data: data,
-    error: error
-  }
+  return await callExternalApi(config);
   }
 
-export const addNewCompany = async(accessToken, company) => {
+export const addNewProduct = async(accessToken, Product_user) => {
   const config = {
-    url: `${apiServerUrl}/company`,
+    url: `${apiServerUrl}/product`,
     method: "POST",
-    body: JSON.stringify(company),
+    body: JSON.stringify(Product_user),
     headers: {
       "content-type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
   };
 
-  const { data, error } = await callExternalApiWithBody(config);
-
-  return {
-    data: data,
-    error: error
-  };
+  return await callExternalApiWithBody(config);
 }

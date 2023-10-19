@@ -7,17 +7,19 @@ import {
   Routes,
   useNavigate,
 } from "react-router-dom";
-import Root from "./routes/Root"
+import Root from "./routes/Root";
 import Invoice from "./routes/Invoice";
-import { CallbackPage } from "./callback-page";
+import { CallbackPage } from "./pages/callback-page";
 import { redirect } from "react-router-dom";
 import { IndexPage } from "./pages/index-page";
 import { useAuth0 } from "@auth0/auth0-react";
 import { PageLoader } from "./pages/page-loader";
 import { NotFoundPage } from "./pages/pageNotFound";
 import { HomePage } from "./pages/home-page";
-import { AuthenticationGuard } from "./components/authentication-guard";
+import { AuthenticationGuard } from "./authentication-guard";
 import { DashboardPage } from "./pages/dashboard-page";
+import "./App.css";
+import { LogoutPage } from "./pages/logout-page";
 
 export const App = () => {
   const { isLoading } = useAuth0();
@@ -33,8 +35,18 @@ export const App = () => {
   return (
     <Routes>
       <Route path="/" element={<IndexPage />} />
-      <Route path="/home" element={<AuthenticationGuard component={HomePage} />} />
-      <Route path="/dashboard" element={<AuthenticationGuard component={DashboardPage} />} />
+      <Route
+        path="/home"
+        element={<AuthenticationGuard component={HomePage} />}
+      />
+      <Route
+        path="/dashboard"
+        element={<AuthenticationGuard component={DashboardPage} />}
+      />
+      <Route
+        path="/logout"
+        element={<AuthenticationGuard component={LogoutPage} />}
+      />
       <Route path="/callback" element={<CallbackPage />} />
       <Route path="/invoice" element={<Invoice />} />
       <Route path="*" element={<NotFoundPage />} />

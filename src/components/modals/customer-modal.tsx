@@ -1,7 +1,7 @@
 import { Modal, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { CustomerType } from "./Customer";
-import { addNewCustomer } from "../external/Customer";
+import { addNewCustomer } from "../../external/Customer";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface Props {
   show: boolean;
@@ -15,16 +15,18 @@ export default function CustomerModal(props: Props) {
 
   const handleClose = () => props.setShow(false);
 
-  useEffect( () => {
+  useEffect(() => {
     setName(undefined);
     setAddress(undefined);
     setPhone_No(undefined);
-  }, [props.show]
-  );
+  }, [props.show]);
 
-  function HandleSubmit() {
+  const { getAccessTokenSilently } = useAuth0();
+
+  async function HandleSubmit() {
     if (name != undefined && phone_no != undefined && address != undefined) {
-      addNewCustomer({ id: 0, name, phone_no, address });
+      const accessToken = await getAccessTokenSilently();
+      await addNewCustomer(accessToken, { id: 0, name, phone_no, address });
       handleClose();
     }
   }

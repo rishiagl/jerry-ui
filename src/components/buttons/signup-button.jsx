@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 
-export const SignupButton = ({style}) => {
+export const SignupButton = ({className}) => {
   const { loginWithRedirect } = useAuth0();
 
   const handleSignUp = async () => {
@@ -16,7 +16,7 @@ export const SignupButton = ({style}) => {
   };
 
   return (
-    <button style={style} onClick={handleSignUp}>
+    <button className={className} onClick={handleSignUp}>
       Sign Up
     </button>
   );

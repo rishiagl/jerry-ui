@@ -1,8 +1,9 @@
 import { Modal, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { CustomerType } from "./Customer";
-import { ProductType } from "./Product";
-import { addNewProduct } from "../external/Product";
+import { CustomerType } from "../Customer";
+import { ProductType } from "../Product";
+import { addNewProduct } from "../../external/Product";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface Props {
   show: boolean;
@@ -14,6 +15,14 @@ export default function AddNewProductModal(props: Props) {
   const [hsn, setHsn] = useState<string>();
   const [tax_rate, setTax_rate] = useState<number>();
 
+  const { user } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
+
+  if (!user) {
+    return null;
+  }
+
+
   useEffect(() => {
     setName(undefined);
     setHsn(undefined);
@@ -22,9 +31,10 @@ export default function AddNewProductModal(props: Props) {
 
   const handleClose = () => props.setShow(false);
 
-  function HandleSubmit() {
+  async function HandleSubmit() {
     if (name != undefined && hsn != undefined && tax_rate != undefined) {
-      addNewProduct({ id: 0, name, hsn, tax_rate });
+      const accessToken = await getAccessTokenSilently();
+      await addNewProduct(accessToken, { id: 0, name, hsn, tax_rate });
       handleClose();
     }
   }

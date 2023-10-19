@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { LoginButton } from "../components/buttons/login-button";
-import { LogoutButton } from "../components/buttons/logout-button";
 import { SignupButton } from "../components/buttons/signup-button";
+import { useNavigate } from "react-router-dom";
 
 const backgroundStyle = {
   backgroundColor: "#E74E35",
@@ -19,9 +19,13 @@ const logoStyle = {
 
 export function IndexPage() {
   const { isAuthenticated } = useAuth0();
+  const navigate = useNavigate();
 
   return (
-    <div className="container-fluid d-flex" style={backgroundStyle as React.CSSProperties}>
+    <div
+      className="container-fluid d-flex"
+      style={backgroundStyle as React.CSSProperties}
+    >
       <div style={{ marginTop: "2%" }}>
         <p
           className="text-white"
@@ -38,45 +42,14 @@ export function IndexPage() {
       <div>
         {isAuthenticated && (
           <>
-            <LogoutButton
-              style={{
-                padding: "10px",
-                fontSize: "clamp(1.2rem, 2.5vw, 4rem)",
-                textDecoration: "none",
-                border: "none",
-                borderRadius: "12px",
-                fontFamily: "Lucida Console",
-                color: "#E74E35",
-              }}
-            ></LogoutButton>
+            <button onClick={() => { navigate("/logout")}}>logout</button>
           </>
         )}
         {!isAuthenticated && (
           <>
             {" "}
-            <LoginButton
-              style={{
-                padding: "10px",
-                fontSize: "clamp(1.2rem, 2.5vw, 4rem)",
-                textDecoration: "none",
-                border: "none",
-                borderRadius: "12px",
-                fontFamily: "Lucida Console",
-                color: "#E74E35",
-              }}
-            ></LoginButton>
-            <SignupButton
-              style={{
-                padding: "10px",
-                fontSize: "clamp(1.2rem, 2.5vw, 4rem)",
-                backgroundColor: "#E74E35",
-                textDecoration: "none",
-                border: "none",
-                borderRadius: "12px",
-                fontFamily: "Lucida Console",
-                color: "white",
-              }}
-            ></SignupButton>
+            <LoginButton className={"text-white"}></LoginButton>
+            <SignupButton className={"text-white"}></SignupButton>
           </>
         )}
       </div>

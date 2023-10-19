@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import Product, { ProductType } from "./Product";
+import Product, { ProductType } from "../Product";
 import { Modal } from "react-bootstrap";
 import Select from "react-select";
-import AddNewProductModal from "./AddNewProductModal";
-import { InvoiceItem } from "../routes/Invoice";
-import { getAllProducts } from "../external/Product";
+import AddNewProductModal from "./new-product-modal";
+import { InvoiceItem } from "../../routes/Invoice";
+import { getProduct } from "../../external/Product";
+import { useAuth0 } from "@auth0/auth0-react";
 
 type Props = {
   show: boolean;
@@ -23,22 +24,45 @@ export function AddProductModal(props: Props) {
   const [allProducts, setAllProducts] = useState<ProductType[]>([]);
   const [showAddNewProductModal, setShowAddNewProductModal] = useState(false);
 
+  const { user } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
+
+  if (!user) {
+    return null;
+  }
+  
   useEffect(() => {
-    getAllProducts()
-      .then((res) => {
-        console.log(res);
-        setAllProducts(res);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    let isMounted = true;
+
+    const getCustomers = async () => {
+      const accessToken = await getAccessTokenSilently();
+      const { data, error } = await getProduct(accessToken);
+
+      if (!isMounted) {
+        return;
+      }
+
+      if (data) {
+        setAllProducts(data);
+      }
+
+      if (error) {
+        console.log("External API not working");
+      }
+    };
+
+    getCustomers();
     setId(undefined);
     setName(undefined);
     setHsn(undefined);
     setTax_rate(undefined);
     setQty(undefined);
     setRate(undefined);
-  }, [props.show, showAddNewProductModal]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [getAccessTokenSilently, props.show, showAddNewProductModal]);
 
   const handleClose = () => props.setShow(false);
 

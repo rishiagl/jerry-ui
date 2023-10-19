@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import Customer from "../components/Customer";
 import Product, { ProductType } from "../components/Product";
 import { CustomerType } from "../components/Customer";
-import CustomerModal from "../components/CustomerModal";
+import CustomerModal from "../components/modals/customer-modal";
 import { useNavigate } from "react-router-dom";
 import { addInvoice } from "../external/Invoice";
 import { Modal, Button } from "react-bootstrap";
@@ -30,8 +30,7 @@ export default function Invoice() {
           setInvoiceitemList([]);
           setAlertMessage("Invoice SuccessFully Added!");
           setShowAlertModal(true);
-        }
-        else {
+        } else {
           setAlertMessage("Error: Invoice Not Added");
           setShowAlertModal(true);
         }
