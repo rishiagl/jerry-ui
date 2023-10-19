@@ -20,6 +20,7 @@ import { AuthenticationGuard } from "./authentication-guard";
 import { DashboardPage } from "./pages/dashboard-page";
 import "./App.css";
 import { LogoutPage } from "./pages/logout-page";
+import { TransactionInvoicePage } from "./pages/transaction/invoice-page";
 
 export const App = () => {
   const { isLoading } = useAuth0();
@@ -42,6 +43,10 @@ export const App = () => {
       <Route
         path="/dashboard"
         element={<AuthenticationGuard component={DashboardPage} />}
+      />
+      <Route
+        path="/transaction/invoice"
+        element={<AuthenticationGuard component={TransactionInvoicePage} />}
       />
       <Route
         path="/logout"
