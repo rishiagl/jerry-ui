@@ -19,6 +19,7 @@ export const Auth0ProviderWithNavigate = ({ children }) => {
 
   return (
     <Auth0Provider
+      cacheLocation='localstorage'
       domain={domain}
       clientId={clientId}
       authorizationParams={{
