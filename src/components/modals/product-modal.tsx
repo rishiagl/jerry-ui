@@ -3,22 +3,20 @@ import Product, { ProductType } from "../Product";
 import { Modal } from "react-bootstrap";
 import Select from "react-select";
 import AddNewProductModal from "./new-product-modal";
-import { InvoiceItem } from "../../routes/Invoice";
 import { getProduct } from "../../external/Product";
 import { useAuth0 } from "@auth0/auth0-react";
+import { ItemType } from "../../pages/transaction/invoice-page";
 
 type Props = {
   show: boolean;
   setShow: (value: boolean) => void;
-  invoiceItemList: InvoiceItem[];
-  setInvoiceItemList: (invoiceItemList: InvoiceItem[]) => void;
+  itemList: ItemType[];
+  setitemList: (ItemTypeList: ItemType[]) => void;
 };
 
 export function AddProductModal(props: Props) {
-  const [id, setId] = useState<number>();
-  const [name, setName] = useState<string>();
-  const [hsn, setHsn] = useState<string>();
-  const [tax_rate, setTax_rate] = useState<number>();
+  const [product, setProduct] = useState<ProductType>();
+  const [description, setDescription] = useState<string>();
   const [qty, setQty] = useState<number>();
   const [rate, setRate] = useState<number>();
   const [allProducts, setAllProducts] = useState<ProductType[]>([]);
@@ -52,12 +50,10 @@ export function AddProductModal(props: Props) {
     };
 
     getCustomers();
-    setId(undefined);
-    setName(undefined);
-    setHsn(undefined);
-    setTax_rate(undefined);
+    setProduct(undefined);
     setQty(undefined);
     setRate(undefined);
+    setDescription(undefined);
 
     return () => {
       isMounted = false;
@@ -67,11 +63,12 @@ export function AddProductModal(props: Props) {
   const handleClose = () => props.setShow(false);
 
   function HandleSubmit() {
-    if (id != undefined && qty != undefined && rate != undefined) {
-      props.setInvoiceItemList([
-        ...props.invoiceItemList,
+    if (product != undefined && qty != undefined && rate != undefined) {
+      props.setitemList([
+        ...props.itemList,
         {
-          product: { id: id, name: name, hsn: hsn, tax_rate: tax_rate },
+          product: product,
+          description: description || "",
           qty: qty,
           rate: rate,
         },
@@ -82,10 +79,7 @@ export function AddProductModal(props: Props) {
   }
 
   function onProductSelect(product: ProductType) {
-    setId(product.id || 0);
-    setName(product.name || "");
-    setHsn(product.hsn || "");
-    setTax_rate(product.tax_rate || 0);
+    setProduct(product)
   }
   function PropToSelectList(products: ProductType[]) {
     return products.map((opt: ProductType) => ({
@@ -127,15 +121,26 @@ export function AddProductModal(props: Props) {
           &nbsp;
           <div className="mb-3">
             <p>
-              Id: {id}
+              Id: {product?.id}
               <br />
-              Name: {name}
+              Name: {product?.name}
               <br />
-              HSN: {hsn}
+              HSN: {product?.hsn}
               <br />
-              Tax_Rate: {tax_rate}
+              Tax_Rate: {product?.tax_rate}
               <br />
             </p>
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Description:</label>
+            <input
+              className="form-control"
+              type="text"
+              id="description"
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              required
+            ></input>
           </div>
           <div className="mb-3">
             <label className="form-label">Qty:</label>
