@@ -11,10 +11,17 @@ export type CompanyType = {
   name?: string;
   legal_name?: string;
   address?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
   gstn?: string;
   phone_no?: string;
   email?: string;
   website?: string;
+  bank_name?: string;
+  account_no?: string;
+  ifsc_code?: string;
+  upi_id?: string;
   owner_email?: string;
 };
 
@@ -75,7 +82,7 @@ export default function Company(props: Props) {
 
   const handleGo = () => {
     if (props.company.id != undefined) {
-      navigate("/dashboard", { state: { company: props.company, style: {} } });
+      navigate("/dashboard");
     }
   };
 

@@ -5,10 +5,11 @@ import { getCustomer } from "../external/Customer";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export type CustomerType = {
-  id?: number;
   name?: string;
   phone_no?: string;
   address?: string;
+  state?: string;
+  pincode?: string
 };
 
 interface Props {
@@ -68,44 +69,53 @@ export default function Customer(props: Props) {
         show={showCustomerModal}
         setShow={setShowCustomerModal}
       ></CustomerModal>
-      <div
-        style={{
-          borderStyle: "solid",
-          borderWidth: "8px",
-          borderColor: "#2979ff",
-          padding: "2rem",
-          borderRadius: "30px",
-          marginLeft: "35%",
-          marginRight: "15%",
-          fontFamily: "Lucida Console",
-          fontSize: "clamp(1rem, 1.5vw, 3rem)",
-          textAlign: "left",
-          maxWidth: "500px",
-        }}
-      >
-        <h3>
-          Customer &nbsp;
+      <div className="w-full">
+        {/* Header */}
+        <div className="flex justify-between mb-3">
+          <h4>Customer</h4>
           <button
-            className="btn btn-success"
+            className="py-0.5 px-2 rounded bg-gray-400"
             onClick={(event) => setShowCustomerModal(true)}
           >
-            New
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
+              />
+            </svg>
           </button>
-        </h3>
+        </div>
+
         <Select
           options={PropToSelectList(customers)}
           onChange={(opt) => props.setCustomer(opt!.value)}
         />
-        <p>
-          Id: {props.customer.id}
-          <br />
-          Name: {props.customer.name}
-          <br />
-          Phone No: {props.customer.phone_no}
-          <br />
-          Address: {props.customer.address}
-          <br />
-        </p>
+
+        <div className="flex justify-center m-2 w-full">
+          <img
+            className="w-40 h-40 rounded-full"
+            src="../assets/user-profile.jpg"
+            alt="Rounded avatar"
+          ></img>
+        </div>
+        <div>
+          <p>
+            Name: {props.customer.name}
+            <br />
+            Phone No: {props.customer.phone_no}
+            <br />
+            Address: {props.customer.address}, {props.customer.state}-{props.customer.pincode}
+            <br />
+          </p>
+        </div>
       </div>
     </Fragment>
   );
