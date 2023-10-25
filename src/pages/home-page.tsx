@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import Company, { CompanyType } from "../components/Company";
-import { useState } from "react";
-import { LogoutButton } from "../components/buttons/logout-button";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const backgroundStyle = {
   height: "100vh",
@@ -13,7 +13,12 @@ const backgroundStyle = {
 export function HomePage() {
   const { user } = useAuth0();
   const [company, setCompany] = useState<CompanyType>({});
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    localStorage.setItem('company', JSON.stringify(company));
+  }, [company]);
+  
   if (!user) {
     return null;
   }
@@ -57,22 +62,7 @@ export function HomePage() {
               fontSize: "clamp(1rem, 1.5vw, 3rem)",
             }}
           ></Company>
-          <LogoutButton
-            style={{
-              padding: "10px",
-              fontSize: "clamp(1rem, 1.5vw, 3rem)",
-              textDecoration: "none",
-              border: "none",
-              borderRadius: "12px",
-              fontFamily: "Lucida Console",
-              color: "#E74E35",
-              position: "absolute",
-              top: "90%",
-              left: "90%",
-              backgroundColor: "white",
-              borderStyle: "solid",
-            }}
-          ></LogoutButton>
+          <button onClick={() => { navigate("/logout")}}>logout</button>
         </div>
       </div>
     </div>

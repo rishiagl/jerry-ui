@@ -1,22 +1,42 @@
-export const callExternalApi = async(config) => {
-    let data = null;
-    let error = "";
-    await fetch(config.url, {
+export const callExternalApi = async (config) => {
+  let data
+  let error
+  try {
+    const response = await fetch(config.url, {
+      method: config.method,
+      headers: config.headers,
+    });
+    data = await response.json();
+  }
+  catch(e) {
+    console.log(e)
+    error = e
+  }
+
+  return {
+    data: data,
+    error: ""
+  }
+}
+
+export const callExternalApiWithBody = async (config) => {
+  let data
+  let error
+  try {
+    const response = await fetch(config.url, {
       method: config.method,
       body: config.body,
-      headers: config.headers
-    })
-      .then((response) => response.json())
-      .then((d) => {
-        data = d;
-      })
-      .catch((err) => {
-        console.log(err.message);
-        error = err
-      });
-
-      return {
-        data: data,
-        error: error,
-      };
+      headers: config.headers,
+    });
+    data = await response.json();
   }
+  catch(e) {
+    console.log(e)
+    error = e
+  }
+
+  return {
+    data: data,
+    error: ""
+  }
+}
