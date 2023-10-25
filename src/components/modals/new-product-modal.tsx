@@ -32,7 +32,7 @@ export default function AddNewProductModal(props: Props) {
   const handleClose = () => props.setShow(false);
 
   async function HandleSubmit() {
-    if (name != undefined && hsn != undefined && tax_rate != undefined) {
+    if (name != undefined && hsn != undefined && tax_rate != undefined && tax_rate >= 0) {
       const accessToken = await getAccessTokenSilently();
       await addNewProduct(accessToken, { id: 0, name, hsn, tax_rate });
       handleClose();

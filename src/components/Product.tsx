@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { AddProductModal } from "./modals/product-modal";
-import { ItemType } from "../pages/transaction/invoice-page";
+import { ItemType } from "../pages/invoice-page";
 
 export type ProductType = {
   id: number;
@@ -27,7 +27,7 @@ export default function Product(props: Props) {
       ></AddProductModal>
       <div className="flex flex-col w-full h-full">
         {/* Header */}
-        <div className="flex justify-between mb-3">
+        <div className="flex justify-between mb-2">
           <h4>Products</h4>
           <button
             className="py-0.5 px-2 rounded bg-gray-400"
@@ -54,7 +54,7 @@ export default function Product(props: Props) {
           {props.itemList.map((ItemType) => (
             <div className="flex pt-2 pl-2 pr-2 w-full justify-between rounded-lg bg-gray-100">
               <div className="w-7/12">
-                <p className="truncate inline">
+                <p className="truncate">
                   <span className="font-semibold">Name: </span>
                   {ItemType.product.name}
                 </p>

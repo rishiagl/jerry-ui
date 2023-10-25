@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import Company, { CompanyType } from "../components/Company";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const backgroundStyle = {
@@ -15,6 +15,10 @@ export function HomePage() {
   const [company, setCompany] = useState<CompanyType>({});
   const navigate = useNavigate();
 
+  useEffect(() => {
+    localStorage.setItem('company', JSON.stringify(company));
+  }, [company]);
+  
   if (!user) {
     return null;
   }

@@ -5,7 +5,7 @@ import Select from "react-select";
 import AddNewProductModal from "./new-product-modal";
 import { getProduct } from "../../external/Product";
 import { useAuth0 } from "@auth0/auth0-react";
-import { ItemType } from "../../pages/transaction/invoice-page";
+import { ItemType } from "../../pages/invoice-page";
 
 type Props = {
   show: boolean;
@@ -28,7 +28,7 @@ export function AddProductModal(props: Props) {
   if (!user) {
     return null;
   }
-  
+
   useEffect(() => {
     let isMounted = true;
 
@@ -63,7 +63,7 @@ export function AddProductModal(props: Props) {
   const handleClose = () => props.setShow(false);
 
   function HandleSubmit() {
-    if (product != undefined && qty != undefined && rate != undefined) {
+    if (product != undefined && qty != undefined && qty > 0 && rate != undefined && rate > 0) {
       props.setitemList([
         ...props.itemList,
         {
@@ -79,7 +79,7 @@ export function AddProductModal(props: Props) {
   }
 
   function onProductSelect(product: ProductType) {
-    setProduct(product)
+    setProduct(product);
   }
   function PropToSelectList(products: ProductType[]) {
     return products.map((opt: ProductType) => ({
