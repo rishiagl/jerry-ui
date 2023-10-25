@@ -9,7 +9,7 @@ export type CustomerType = {
   phone_no?: string;
   address?: string;
   state?: string;
-  pincode?: string
+  pincode?: string;
 };
 
 interface Props {
@@ -71,7 +71,7 @@ export default function Customer(props: Props) {
       ></CustomerModal>
       <div className="w-full">
         {/* Header */}
-        <div className="flex justify-between mb-3">
+        <div className="flex justify-between mb-2">
           <h4>Customer</h4>
           <button
             className="py-0.5 px-2 rounded bg-gray-400"
@@ -97,24 +97,32 @@ export default function Customer(props: Props) {
         <Select
           options={PropToSelectList(customers)}
           onChange={(opt) => props.setCustomer(opt!.value)}
+          className="rounded m-1"
         />
 
         <div className="flex justify-center m-2 w-full">
           <img
-            className="w-40 h-40 rounded-full"
+            className="w-25 h-25 rounded-full"
             src="../assets/user-profile.jpg"
             alt="Rounded avatar"
           ></img>
         </div>
-        <div>
-          <p>
-            Name: {props.customer.name}
-            <br />
-            Phone No: {props.customer.phone_no}
-            <br />
-            Address: {props.customer.address}, {props.customer.state}-{props.customer.pincode}
-            <br />
-          </p>
+        <div className="flex flex-col justify-between bg-zinc-100 rounded p-2 font-semibold m-1">
+          <div className="flex flex-row w-full pb-1">
+            <div className="w-1/5">Name</div>
+            <div className="w-4/5">: {props.customer.name}
+            </div>
+          </div>
+          <div className="flex flex-row w-full pb-1">
+            <div className="w-1/5">Phone No</div>
+            <div className="w-4/5">: {props.customer.phone_no}
+            </div>
+          </div>
+          <div className="flex flex-row w-full">
+            <div className="w-1/5">Address</div>
+            <div className="w-4/5 text-ellipsis overflow-hidden">: {props.customer.address}, {props.customer.state} - {props.customer.pincode}
+            </div>
+          </div>
         </div>
       </div>
     </Fragment>

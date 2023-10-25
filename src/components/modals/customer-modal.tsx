@@ -29,9 +29,21 @@ export default function CustomerModal(props: Props) {
   const { getAccessTokenSilently } = useAuth0();
 
   async function HandleSubmit() {
-    if (name != undefined && phone_no != undefined && address != undefined && state != undefined) {
+    if (
+      name != undefined &&
+      phone_no != undefined &&
+      address != undefined &&
+      state != undefined && pincode?.length == 6
+    ) {
       const accessToken = await getAccessTokenSilently();
-      await addNewCustomer(accessToken, { id: 0, name, phone_no, address, state, pincode});
+      await addNewCustomer(accessToken, {
+        id: 0,
+        name,
+        phone_no,
+        address,
+        state,
+        pincode,
+      });
       handleClose();
     }
   }
@@ -94,72 +106,78 @@ export default function CustomerModal(props: Props) {
           <Modal.Title>Add New Customer</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="mb-3">
-            <label className="form-label">Phone No:</label>
-            <input
-              type="text"
-              id="phone_no"
-              className="form-control"
-              maxLength={10}
-              value={phone_no || ""}
-              onChange={(event) => setPhone_No(event.target.value)}
-              required
-            ></input>
-          </div>
+          <form>
+            <div className="mb-3">
+              <label className="form-label">Phone No:</label>
+              <input
+                type="text"
+                id="phone_no"
+                className="form-control"
+                maxLength={10}
+                value={phone_no || ""}
+                onChange={(event) => setPhone_No(event.target.value)}
+                required
+              ></input>
+            </div>
 
-          <div className="mb-3">
-            <label className="form-label">Name:</label>
-            <input
-              className="form-control"
-              type="text"
-              id="name"
-              value={name || ""}
-              onChange={(event) => setName(event.target.value)}
-              required
-            ></input>
-          </div>
+            <div className="mb-3">
+              <label className="form-label">Name:</label>
+              <input
+                className="form-control"
+                type="text"
+                id="name"
+                maxLength={20}
+                value={name || ""}
+                onChange={(event) => setName(event.target.value)}
+                required
+              ></input>
+            </div>
 
-          <div className="mb-3">
-            <label className="form-label">Address:</label>
-            <input
-              className="form-control"
-              type="text"
-              id="address"
-              value={address || ""}
-              onChange={(event) => setAddress(event.target.value)}
-              required
-            ></input>
-          </div>
+            <div className="mb-3">
+              <label className="form-label">Address:</label>
+              <input
+                className="form-control"
+                type="text"
+                id="address"
+                maxLength={50}
+                value={address || ""}
+                onChange={(event) => setAddress(event.target.value)}
+                required
+              ></input>
+            </div>
 
-          <div className="mb-3">
-            <label className="form-label">State:</label>
-            <Select
-              options={PropToSelectStateList()}
-              onChange={(opt) => setState(opt!.value)}
-            />
-          </div>
+            <div className="mb-3">
+              <label className="form-label">State:</label>
+              <Select
+                options={PropToSelectStateList()}
+                onChange={(opt) => setState(opt!.value)}
+              />
+            </div>
 
-          <div className="mb-3">
-            <label className="form-label">pincode:</label>
-            <input
-              className="form-control"
-              type="text"
-              id="pincode"
-              value={pincode || ""}
-              onChange={(event) => setPincode(event.target.value)}
-            ></input>
-          </div>
+            <div className="mb-3">
+              <label className="form-label">pincode:</label>
+              <input
+                className="form-control"
+                type="text"
+                id="pincode"
+                maxLength={6}
+                minLength={6}
+                value={pincode || ""}
+                onChange={(event) => setPincode(event.target.value)}
+                required
+              ></input>
+            </div>
 
-
-          <div className="mb-3">
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={(event) => HandleSubmit()}
-            >
-              Submit
-            </button>
-          </div>
+            <div className="mb-3">
+              <button
+                type="submit"
+                className="btn btn-primary"
+                onClick={(event) => HandleSubmit()}
+              >
+                Submit
+              </button>
+            </div>
+          </form>
         </Modal.Body>
       </Modal>
     </>
