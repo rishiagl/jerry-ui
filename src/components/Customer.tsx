@@ -74,7 +74,7 @@ export default function Customer(props: Props) {
         <div className="flex justify-between mb-2">
           <h4>Customer</h4>
           <button
-            className="py-0.5 px-2 rounded bg-gray-400"
+            className="py-0.5 px-2 rounded bg-slate-400"
             onClick={(event) => setShowCustomerModal(true)}
           >
             <svg
@@ -107,7 +107,7 @@ export default function Customer(props: Props) {
             alt="Rounded avatar"
           ></img>
         </div>
-        <div className="flex flex-col justify-between bg-zinc-100 rounded p-2 font-semibold m-1">
+        <div className="flex flex-col justify-between bg-slate-100 rounded p-2 font-semibold m-1">
           <div className="flex flex-row w-full pb-1">
             <div className="w-1/5">Name</div>
             <div className="w-4/5">: {props.customer.name}

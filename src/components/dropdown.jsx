@@ -11,7 +11,7 @@ export default function Dropdown({name, links}) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex justify-center gap-x-1.5 rounded-md px-1 py-2 text-gray-700 hover:bg-gray-50">
+        <Menu.Button className="inline-flex justify-center gap-x-1.5 rounded-md px-1 py-2 hover:font-bold text-white">
           {name}
           <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
         </Menu.Button>
@@ -35,7 +35,7 @@ export default function Dropdown({name, links}) {
                   href={link.href}
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
+                    'block px-4 py-2 text-sm', 'no-underline'
                   )}
                 >
                   {link.label}
