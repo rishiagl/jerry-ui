@@ -30,7 +30,7 @@ export default function Product(props: Props) {
         <div className="flex justify-between mb-2">
           <h4>Products</h4>
           <button
-            className="py-0.5 px-2 rounded bg-gray-400"
+            className="py-0.5 px-2 rounded bg-slate-400"
             onClick={(event) => setShowAddProductModal(true)}
           >
             <svg
@@ -52,7 +52,7 @@ export default function Product(props: Props) {
 
         <div className="flex flex-col md:overflow-y-auto space-y-2 m-1">
           {props.itemList.map((ItemType) => (
-            <div className="flex pt-2 pl-2 pr-2 w-full justify-between rounded-lg bg-gray-100">
+            <div className="flex pt-2 pl-2 pr-2 w-full justify-between rounded-lg bg-slate-100">
               <div className="w-7/12">
                 <p className="truncate">
                   <span className="font-semibold">Name: </span>
