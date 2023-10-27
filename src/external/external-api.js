@@ -8,7 +8,7 @@ export const callExternalApi = async (config) => {
     });
     data = await response.json();
   }
-  catch(e) {
+  catch (e) {
     console.log(e)
     error = e
   }
@@ -30,7 +30,7 @@ export const callExternalApiWithBody = async (config) => {
     });
     data = await response.json();
   }
-  catch(e) {
+  catch (e) {
     console.log(e)
     error = e
   }
@@ -39,4 +39,17 @@ export const callExternalApiWithBody = async (config) => {
     data: data,
     error: ""
   }
+}
+
+export const callExternalPdfApiWithBody = async (config) => {
+  fetch(config.url, {
+    method: config.method,
+    body: config.body,
+    headers: config.headers,
+  }).then(response => {
+    response.blob().then(blob => {
+      let url = window.URL.createObjectURL(blob);
+      return url;
+  });
+  });
 }

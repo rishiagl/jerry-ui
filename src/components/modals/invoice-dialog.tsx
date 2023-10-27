@@ -2,23 +2,38 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import { downloadInvoicePdf, printInvoicePdf } from "../../external/pdf";
+import { useAuth0 } from "@auth0/auth0-react";
 
 type Props = {
   open: boolean;
-  setOpen: (value: boolean) => void,
-  company_name: string,
-  invoice_no: string,
+  setOpen: (value: boolean) => void;
+  company_name: string;
+  invoice_no: string;
 };
 export default function InvoiceDialog(props: Props) {
   const cancelButtonRef = useRef(null);
   const navigate = useNavigate();
+  const { getAccessTokenSilently } = useAuth0();
+  const [url, setUrl] = useState("");
+
+  const handleDownload = async () => {
+    const accessToken = await getAccessTokenSilently();
+    downloadInvoicePdf(accessToken, props.invoice_no, props.company_name)
+  };
+
+  const handlePrint = async () => {
+    const accessToken = await getAccessTokenSilently();
+    printInvoicePdf(accessToken, props.invoice_no, props.company_name)
+  };
+
   return (
     <Transition.Root show={props.open} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={props.setOpen}
+        onClose={() => {}}
       >
         <Transition.Child
           as={Fragment}
@@ -55,31 +70,27 @@ export default function InvoiceDialog(props: Props) {
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                            Please either download or print for future reference
+                          Please either download or print for future reference
                         </p>
                         <p className="text-lg font-semibold text-gray-900">
-                            Invoice No: {props.invoice_no}
+                          Invoice No: {props.invoice_no}
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="bg-gray-50 px-4 py-3 flex flex-row justify-end sm:px-6">
-                <button
+                  <button
                     type="button"
                     className="bg-slate-900 rounded px-4 py-2 m-1 text-white"
-                    onClick={() => {
-                    }}
-                    ref={cancelButtonRef}
+                    onClick={handleDownload}
                   >
                     Download
                   </button>
                   <button
                     type="button"
                     className="bg-slate-700 rounded px-4 py-2 m-1 text-white"
-                    onClick={() => { 
-                    }}
-                    ref={cancelButtonRef}
+                    onClick={handlePrint}
                   >
                     Print
                   </button>
@@ -87,7 +98,7 @@ export default function InvoiceDialog(props: Props) {
                     type="button"
                     className="bg-slate-500 rounded pl-4 pr-4 pt-2 pb-2 text-white m-1"
                     onClick={() => {
-                        navigate(0)
+                      navigate(0);
                     }}
                   >
                     Back
