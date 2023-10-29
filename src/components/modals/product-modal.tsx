@@ -32,7 +32,7 @@ export function AddProductModal(props: Props) {
   useEffect(() => {
     let isMounted = true;
 
-    const getCustomers = async () => {
+    const getProducts = async () => {
       const accessToken = await getAccessTokenSilently();
       const { data, error } = await getProduct(accessToken);
 
@@ -49,7 +49,7 @@ export function AddProductModal(props: Props) {
       }
     };
 
-    getCustomers();
+    getProducts();
     setProduct(undefined);
     setQty(undefined);
     setRate(undefined);
